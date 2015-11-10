@@ -4,14 +4,12 @@ class Pod::Coverage {
 
     method coverage($toload, $packageStr){
         require ::($toload);
-        for ::($packageStr).WHO.values -> $whoO {
-            parse($whoO," ");           
-        }
-
+        #start from self
+        parse(::($packageStr), "");
     }
 
-    sub parse($whoO,$level){  
-
+    sub parse($whoO,$level){ 
+        
       if ($whoO.WHAT ~~ Routine) {
           # Because Routine is a class it must be checked before
             unless $whoO.WHY {
@@ -46,4 +44,8 @@ sub MAIN(){
 
 #sub MAIN(){
 #    Pod::Coverage.coverage("Pod::Coverage","Pod::Coverage");
+#}
+
+#sub MAIN(){
+#    Pod::Coverage.coverage("Mortgage","Mortgage");
 #}
