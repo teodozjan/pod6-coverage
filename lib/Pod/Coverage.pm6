@@ -14,8 +14,10 @@ class Pod::Coverage {
         if ($whoO.HOW ~~ Metamodel::PackageHOW) {
             say $level ~ $whoO.gist ~ " Package";
             say parse($whoO.WHO.values," " ~ $level); 
-            } elsif ($whoO.HOW ~~ Metamodel::ClassHOW) {
-                say $level ~ $whoO.gist ~ " Class";
+        } elsif ($whoO.HOW ~~ Metamodel::ClassHOW) {
+            unless $whoO.WHY {
+                say $level ~ $whoO.gist ~ " class is not documented";
+            }
             } else {
                 say $level ~ "what is" ~ $whoO.HOW.gist ~ " ?";
             }
@@ -23,6 +25,7 @@ class Pod::Coverage {
 
 }
 
+#| Remove after implementing
 sub MAIN(){
     Pod::Coverage.coverage("LacunaCookbuk::Client","LacunaCookbuk");
 }
