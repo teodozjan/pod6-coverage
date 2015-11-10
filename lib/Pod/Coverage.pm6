@@ -10,8 +10,14 @@ class Pod::Coverage {
 
     }
 
-    sub parse($whoO,$level){
-        if ($whoO.HOW ~~ Metamodel::PackageHOW) {            
+    sub parse($whoO,$level){  
+
+      if ($whoO.WHAT ~~ Routine) {            
+            unless $whoO.WHY {
+                say   $level ~ "{$whoO.gist}  is not documented";
+            }  
+        }    
+        elsif ($whoO.HOW ~~ Metamodel::PackageHOW) {            
             for $whoO.WHO.values -> $clazz {
                 parse($clazz, $level); 
             }
@@ -20,14 +26,11 @@ class Pod::Coverage {
         {
             unless $whoO.WHY {
                 say $level ~ "{$whoO.gist} class/role is not documented";
-            }            
-            #parse($whoO.^methods(:local),$level ~ "::{$whoO.gist}");
+            }
+            for $whoO.^methods(:local) -> $m {
+                parse($m,$level ~ "{$whoO.^name}::");
+            }
         }
-        elsif ($whoO.WHAT ~~ Routine) {            
-            unless $whoO.WHY {
-                say   $level ~ "{$whoO.gist}  is not documented";
-            }  
-        }    
         else {
             say $level ~ "what is" ~ $whoO.HOW ~ " ?";
         }
