@@ -1,0 +1,11 @@
+{
+    "name"        : "Pod::Coverage",
+    "version"     : "*",
+    "author"	  : "github:teodozjan",
+    "description" : "Pod coverage library",
+    "depends"     : [ ],
+    "provides"    : {
+	        "Coverage" : "lib/Pod/Coverage.pm6"
+	 },
+    "source-url"  : "git://github.com/teodozjan/pod6-coverage.git"
+}
