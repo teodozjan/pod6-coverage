@@ -13,7 +13,9 @@ class Pod::Coverage {
     sub parse($whoO,$level){
         if ($whoO.HOW ~~ Metamodel::PackageHOW) {
             say $level ~ $whoO.gist ~ " Package";
-            say parse($whoO.WHO.values," " ~ $level); 
+            for $whoO.WHO.values -> $clazz {
+                parse($clazz, " " ~ $level); 
+            }
         } elsif ($whoO.HOW ~~ Metamodel::ClassHOW) {
             unless $whoO.WHY {
                 say $level ~ $whoO.gist ~ " class is not documented";
