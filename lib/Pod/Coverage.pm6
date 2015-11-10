@@ -11,18 +11,26 @@ class Pod::Coverage {
     }
 
     sub parse($whoO,$level){
-        if ($whoO.HOW ~~ Metamodel::PackageHOW) {
-            say $level ~ $whoO.gist ~ " Package";
+        if ($whoO.HOW ~~ Metamodel::PackageHOW) {            
             for $whoO.WHO.values -> $clazz {
-                parse($clazz, " " ~ $level); 
+                parse($clazz, $level); 
             }
-        } elsif ($whoO.HOW ~~ Metamodel::ClassHOW) {
+        } elsif ($whoO.HOW ~~ Metamodel::ClassHOW
+                 or $whoO.HOW ~~ Metamodel::ParametricRoleGroupHOW) 
+        {
             unless $whoO.WHY {
-                say $level ~ $whoO.gist ~ " class is not documented";
-            }
-            } else {
-                say $level ~ "what is" ~ $whoO.HOW.gist ~ " ?";
-            }
+                say $level ~ "{$whoO.gist} class/role is not documented";
+            }            
+            #parse($whoO.^methods(:local),$level ~ "::{$whoO.gist}");
+        }
+        elsif ($whoO.WHAT ~~ Routine) {            
+            unless $whoO.WHY {
+                say   $level ~ "{$whoO.gist}  is not documented";
+            }  
+        }    
+        else {
+            say $level ~ "what is" ~ $whoO.HOW ~ " ?";
+        }
     }
 
 }
@@ -31,3 +39,7 @@ class Pod::Coverage {
 sub MAIN(){
     Pod::Coverage.coverage("LacunaCookbuk::Client","LacunaCookbuk");
 }
+
+#sub MAIN(){
+#    Pod::Coverage.coverage("Pod::Coverage","Pod::Coverage");
+#}
