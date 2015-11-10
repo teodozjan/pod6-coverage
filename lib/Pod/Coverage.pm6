@@ -26,7 +26,7 @@ class Pod::Coverage {
                  or $whoO.HOW ~~ Metamodel::ParametricRoleGroupHOW) 
         {
             unless $whoO.WHY {
-                say $level ~ "{$whoO.gist} class/role is not documented";
+                say $level ~ "{$whoO.^name} class/role is not documented";
             }
             for $whoO.^methods(:local) -> $m {
                 parse($m,$level ~ "{$whoO.^name}::");
