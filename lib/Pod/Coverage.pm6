@@ -8,7 +8,7 @@ class Pod::Coverage {
         parse(::($packageStr), "");
     }
 
-    sub parse($whoO,$level){ 
+    sub parse($whoO,$level) is export { 
         
       if ($whoO.WHAT ~~ Routine) {
           # Because Routine is a class it must be checked before
