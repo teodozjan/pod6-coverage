@@ -12,7 +12,8 @@ class Pod::Coverage {
 
     sub parse($whoO,$level){  
 
-      if ($whoO.WHAT ~~ Routine) {            
+      if ($whoO.WHAT ~~ Routine) {
+          # Because Routine is a class it must be checked before
             unless $whoO.WHY {
                 say   $level ~ "{$whoO.gist}  is not documented";
             }  
