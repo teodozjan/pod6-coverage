@@ -41,6 +41,10 @@ class Pod::Coverage {
             for $whoO.^methods(:local) -> $m {
                 parse($m,$level ~ "{$whoO.^name}");
             }
+            for $whoO.WHO<EXPORT>.WHO<ALL>.WHO.values -> $subr {                
+                parse($subr,$level ~ "{$whoO.^name}");
+            }
+            
         }
         else {
             say $level ~ "what is" ~ $whoO.HOW ~ " ?";
@@ -51,7 +55,7 @@ class Pod::Coverage {
 
 #| Remove after implementing
 sub MAIN(){
-    Pod::Coverage.coverage("LacunaCookbuk::Client","LacunaCookbuk");
+    Pod::Coverage.coverage("LacunaCookbuk::Client","Empire");
 }
 
 #sub MAIN(){
