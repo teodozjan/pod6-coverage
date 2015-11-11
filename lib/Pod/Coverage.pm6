@@ -8,23 +8,29 @@ class Pod::Coverage {
         parse(::($packageStr), "");
     }
 
-    sub parse($whoO,$level) is export { 
-        
-      if ($whoO.WHAT ~~ Routine) {
-          # Because Routine is a class it must be checked before
+    sub parse($whoO,$level) is export {
+        if ($whoO.WHAT ~~ Routine) {
+            # Because Routine is a class it must be checked before
             unless $whoO.WHY {
-                say   $level ~ "{$whoO.gist}  is not documented";
+                say   $level ~ "::{$whoO.name}  is not documented";
             }  
         }    
         elsif ($whoO.HOW ~~ Metamodel::PackageHOW) {
             for $whoO.WHO.values -> $clazz {
-                parse($clazz, $level); 
+                parse($clazz, $level ~ "::" ~ $whoO.gist); 
             }
         }
         elsif ($whoO.HOW ~~ Metamodel::ModuleHOW) {
             for $whoO.WHO.values -> $clazz {
-                next if $clazz.^name eq 'EXPORT';
-                parse($clazz, $level);
+                if $clazz.^name eq 'EXPORT' {
+                    for $clazz.WHO<ALL>.WHO.values -> $subr {
+                        parse($subr, $level ~ "{$whoO.^name}");
+                    }
+
+                } else {
+                    parse($clazz, $level);
+                }
+                
             }
         } elsif ($whoO.HOW ~~ Metamodel::ClassHOW
                  or $whoO.HOW ~~ Metamodel::ParametricRoleGroupHOW) 
@@ -33,7 +39,7 @@ class Pod::Coverage {
                 say $level ~ "{$whoO.^name} class/role is not documented";
             }
             for $whoO.^methods(:local) -> $m {
-                parse($m,$level ~ "{$whoO.^name}::");
+                parse($m,$level ~ "{$whoO.^name}");
             }
         }
         else {
@@ -49,7 +55,7 @@ sub MAIN(){
 }
 
 #sub MAIN(){
-#    Pod::Coverage.coverage("Pod::Coverage","Pod::Coverage");
+#    Pod::Coverage.coverage("File::Find","File::Find");
 #}
 
 #sub MAIN(){
