@@ -16,9 +16,15 @@ class Pod::Coverage {
                 say   $level ~ "{$whoO.gist}  is not documented";
             }  
         }    
-        elsif ($whoO.HOW ~~ Metamodel::PackageHOW) {            
+        elsif ($whoO.HOW ~~ Metamodel::PackageHOW) {
             for $whoO.WHO.values -> $clazz {
                 parse($clazz, $level); 
+            }
+        }
+        elsif ($whoO.HOW ~~ Metamodel::ModuleHOW) {
+            for $whoO.WHO.values -> $clazz {
+                next if $clazz.^name eq 'EXPORT';
+                parse($clazz, $level);
             }
         } elsif ($whoO.HOW ~~ Metamodel::ClassHOW
                  or $whoO.HOW ~~ Metamodel::ParametricRoleGroupHOW) 
