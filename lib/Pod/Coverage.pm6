@@ -10,7 +10,7 @@ class Pod::Coverage {
         require ::($toload);
         #start from self
         my $i = Pod::Coverage.new;
-        $i.parse(::($packageStr), "");
+        $i.parse(::($packageStr));
         $i.show-results;
     }
 
@@ -26,7 +26,7 @@ class Pod::Coverage {
 
       }
 
-    method parse($whoO,$level) {
+    method parse($whoO) {
         if ($whoO.WHAT ~~ Routine) {
             # Because Routine is a class it must be checked before
             unless $whoO.WHY {
@@ -49,18 +49,18 @@ class Pod::Coverage {
         }    
         elsif ($whoO.HOW ~~ Metamodel::PackageHOW) {
             for $whoO.WHO.values -> $clazz {
-                self.parse($clazz, $level ~ $whoO.gist); 
+                self.parse($clazz); 
             }
         }
         elsif ($whoO.HOW ~~ Metamodel::ModuleHOW) {
             for $whoO.WHO.values -> $clazz {
                 if $clazz.^name eq 'EXPORT' {
                     for $clazz.WHO<ALL>.WHO.values -> $subr {
-                        self.parse($subr, $level ~ "{$whoO.^name}");
+                        self.parse($subr);
                     }
 
                 } else {
-                    self.parse($clazz, $level);
+                    self.parse($clazz);
                 }
                 
             }
@@ -73,19 +73,19 @@ class Pod::Coverage {
             @!currentAttr = $whoO.^attributes;
       
             for $whoO.^methods(:local) -> $m {                
-                self.parse($m,$level ~ "{$whoO.^name}");
+                self.parse($m);
             }
       
             @!currentAttr = ();
             
             for $whoO.WHO<EXPORT>.WHO<ALL>.WHO.values -> $subr {   
-                self.parse($subr,$level ~ "{$whoO.^name}");
+                self.parse($subr);
             }
              
         }
         elsif ($whoO.HOW ~~ Metamodel::ParametricRoleGroupHOW) {
             for $whoO.^candidates -> $role {
-                self.parse($role,$level);
+                self.parse($role);
             }
         }
 #        elsif ($whoO ~~ Grepper)
@@ -94,7 +94,7 @@ class Pod::Coverage {
 
 #        }
         else {
-            warn $level ~ " what is " ~ $whoO.^name ~ " ?";
+            warn "What is " ~ $whoO.^name ~ " ?";
         }
     }
 
@@ -108,6 +108,10 @@ class Pod::Coverage {
 #    Pod::Coverage.coverage("Mortgage","Mortgage");
 #}
 
+#sub MAIN() {
+#    Pod::Coverage.coverage("File::Find","Pod::Coverage");
+#}
+
 sub MAIN() {
-    Pod::Coverage.coverage("File::Find","Pod::Coverage");
+    Pod::Coverage.coverage("File::Find","File::Find");
 }
