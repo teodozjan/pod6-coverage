@@ -39,7 +39,8 @@ class Pod::Coverage {
         }
 
     }
-
+    
+    #| goes through metaobject tree
     method parse($whoO) {
         if ($whoO.WHAT ~~ Routine) {
             # Because Routine is a class it must be checked before
@@ -114,22 +115,19 @@ class Pod::Coverage {
 
     method correct-pod($filename) {
         my @keywords = qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/.lines;
-        dd @keywords;
-        my $a = "coverage";
-        say @keywords.first(/method\S+$<a>/);
         my @new_results;
         for @!results -> $result {
             # HACK
             my $name = $result.can("package") ?? $result.name !! $result.^name;
             if $result.WHAT ~~ Sub {  
-                @new_results.push: $result unless @keywords.first(/[sub|routine|subroutine] $name/);                
+                @new_results.push: $result unless @keywords.first(/[sub|routine|subroutine]\s+$name/);                
             } elsif $result.WHAT ~~ Routine {
-                @new_results.push: $result unless @keywords.first(/[method] $name/); 
+                @new_results.push: $result unless @keywords.first(/[method]\s+$name/); 
             } else {
-                @new_results.push: $result unless @keywords.first(/$name/); 
+                @new_results.push: $result unless @keywords.first(/\s*$name/); 
             }
         }
-        dd @new_results;
+        @!results =  @new_results;
         
     }
 }
@@ -139,7 +137,7 @@ class Pod::Coverage {
 #}
 
 #sub MAIN(){
-#    Pod::Coverage.coverage("Mortgage","Mortgage");
+
 #}
 
 #sub MAIN() {
@@ -150,18 +148,26 @@ class Pod::Coverage {
 #    Pod::Coverage.use-meta("/home/kamil/mortage6/META.info");
 #}
 
-sub MAIN() {
-    Pod::Coverage.use-meta("/home/kamil/pod6-coverage/META.info");
-}
-
-
 
 =begin pod
 
-    =head1 Pod::Coverage
+=head1 Pod::Coverage
 
-    =head2 method C<coverage>
+=head2 method C<coverage>
 
-    banana banana
+=begin code
+    
+    Pod::Coverage.coverage("Mortgage","Mortgage");
+
+=end code 
+
+=head2 method C<meta>
+
+=begin code
+
+    Pod::Coverage.use-meta("/home/kamil/pod6-coverage/META.info");
+
+=end code
+
 
 =end pod
