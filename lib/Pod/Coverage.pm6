@@ -4,10 +4,10 @@ use JSON::Fast;
 
 
 class Pod::Coverage {
-
+    my Bool $ignore-accessors = True;
     #|Attribute list for skipping accessor methods
     has @!currentAttr;
-    has @!results;
+    has @!results = ();
 
     method use-meta($metafile){
         my $mod = from-json slurp $metafile;
@@ -20,22 +20,29 @@ class Pod::Coverage {
 
     
     method coverage($toload, $packageStr, $path){
+ 
         require ::($toload);
         #start from self
         my $i = Pod::Coverage.new;
         $i.parse(::($packageStr));
         $i.correct-pod($path);
+  
         $i.show-results;
+
     }
 
     method show-results {
-        for @!results.values -> $result {
-            if $result.^can("package") {
-                say $result.package.^name ~ "::" ~ $result.name ~ " is not documented";
+        if @!results {   
+            for @!results.values -> $result {
+                if $result.^can("package") {
+                    say $result.package.^name ~ "::" ~ $result.name ~ " is not documented";
+                }
+                else {
+                    say $result.^name ~ " is not documented";
+                }
             }
-            else {
-                say $result.^name ~ " is not documented";
-            }
+        } else {
+            say "Well done. All seems documented";
         }
 
     }
@@ -51,6 +58,7 @@ class Pod::Coverage {
                         if $attr.name.subst(/.\!/, "") ~~ $whoO.name {
                             
                             if $attr.has-accessor {
+                                return if $ignore-accessors;
                                 unless $attr.WHY {
                                     @!results.push: $attr;
                                 }
@@ -131,27 +139,19 @@ class Pod::Coverage {
         
     }
 }
-#| Remove after implementing
-#sub MAIN(){
-#    Pod::Coverage.coverage("LacunaCookbuk::Client","LacunaCookbuk");
-#}
-
-#sub MAIN(){
-
-#}
-
-#sub MAIN() {
-#    Pod::Coverage.coverage("File::Find","Pod::Coverage");
-#}
-
-#sub MAIN() {
-#    Pod::Coverage.use-meta("/home/kamil/mortage6/META.info");
-#}
-
 
 =begin pod
 
 =head1 Pod::Coverage
+
+=head1 SYNOPSIS
+
+=begin code
+
+git clone https://github.com/jonathanstowe/META6.git
+cd META6
+pod-coverage 
+=end code 
 
 =head2 method C<coverage>
 
@@ -161,7 +161,7 @@ class Pod::Coverage {
 
 =end code 
 
-=head2 method C<meta>
+=head2 method C<use-meta>
 
 =begin code
 
