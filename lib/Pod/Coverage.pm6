@@ -66,7 +66,7 @@ class Pod::Coverage {
 
     }
     
-    #| goes through metaobject tree
+    #| goes through metaobject tree and searches for .WHY
     method parse($whoO) {
         if ($whoO.WHAT ~~ Routine) {
             # Because Routine is a class it must be checked before
@@ -138,6 +138,7 @@ class Pod::Coverage {
         }
     }
 
+    #| Takes whole pod and corrects list made by C<method parse>
     method correct-pod($filename) {
         my @keywords = read_pod($filename);
         my @new_results;
