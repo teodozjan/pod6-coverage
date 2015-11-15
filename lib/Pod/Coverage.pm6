@@ -1,10 +1,9 @@
 use v6;
 use JSON::Fast;
 
-
-
 class Pod::Coverage {
     my Bool $ignore-accessors = True;
+    my Bool $anypod = False;
     #|Attribute list for skipping accessor methods
     has @!currentAttr;
     has @!results = ();
@@ -13,25 +12,41 @@ class Pod::Coverage {
         my $mod = from-json slurp $metafile;
         for (flat @($mod<provides>//Empty)) -> $val {
             for $val.kv -> $k, $v {
-                Pod::Coverage.coverage($k,$k, $v);
+                    Pod::Coverage.coverage($k,$k, $v);
             }
         }
     }
 
+    #| Sometimes any block pod no matter what contains may be fine 
+    method enable-anypod(Bool $value = True) {
+        $anypod = $value;
+    }
+
+    method file-haspod($path, $packageStr) {
+        unless read_pod($path).elems > 0 {
+            my $cl = my class {};
+            $cl.^set_name($packageStr);
+            @!results.push: $cl;
+        }
+    }
     
     method coverage($toload, $packageStr, $path){
- 
-        require ::($toload);
-        #start from self
         my $i = Pod::Coverage.new;
-        $i.parse(::($packageStr));
+        if $anypod {
+            $i.file-haspod($path, $packageStr);
+        }
+        else {
+            require ::($toload);
+            #start from self        
+            $i.parse(::($packageStr));
+        }
         $i.correct-pod($path);
   
-        $i.show-results;
+        $i.show-results($packageStr);
 
     }
 
-    method show-results {
+    method show-results($packageStr) {
         if @!results {   
             for @!results.values -> $result {
                 if $result.^can("package") {
@@ -42,7 +57,7 @@ class Pod::Coverage {
                 }
             }
         } else {
-            say "Well done. All seems documented";
+            say "$packageStr seems documented";
         }
 
     }
@@ -107,7 +122,7 @@ class Pod::Coverage {
             
         }
         elsif ($whoO.HOW ~~ Metamodel::ParametricRoleGroupHOW) {
-            for $whoO.^candidates -> $role {
+            for $whoO.^candidates -> $role {                
                 self.parse($role);
             }
         }
@@ -122,7 +137,7 @@ class Pod::Coverage {
     }
 
     method correct-pod($filename) {
-        my @keywords = qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/.lines;
+        my @keywords = read_pod($filename);
         my @new_results;
         for @!results -> $result {
             # HACK
@@ -138,6 +153,14 @@ class Pod::Coverage {
         @!results =  @new_results;
         
     }
+
+    sub read_pod($filename){
+        return qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/.lines;
+            CATCH {
+                warn "Could not open file $filename";
+                return Empty;
+        }    
+    }
 }
 
 =begin pod
@@ -149,8 +172,25 @@ class Pod::Coverage {
 =begin code
 
 git clone https://github.com/jonathanstowe/META6.git
+
 cd META6
+
+panda install ./
+
 pod-coverage 
+
+=end code 
+
+or
+
+=begin code
+
+git clone https://github.com/jonathanstowe/META6.git
+
+cd META6
+
+pod-coverage --anypod
+
 =end code 
 
 =head2 method C<coverage>
