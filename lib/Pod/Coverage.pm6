@@ -65,7 +65,10 @@ class Pod::Coverage {
         }
 
     }
-    
+    #| true if any pod is missing
+    method are-missing {
+        @!results.elems > 0;
+    }
     #| goes through metaobject tree and searches for .WHY
     method parse($whoO) {
         if ($whoO.WHAT ~~ Routine) {
