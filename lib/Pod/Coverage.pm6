@@ -9,12 +9,17 @@ class Pod::Coverage {
     has @!results = ();
 
     method use-meta($metafile){
+        my @checks;
         my $mod = from-json slurp $metafile;
         for (flat @($mod<provides>//Empty)) -> $val {
             for $val.kv -> $k, $v {
-                    Pod::Coverage.coverage($k,$k, $v);
+                   @checks.push: Pod::Coverage.coverage($k,$k, $v);
             }
         }
+        for @checks -> $check {
+            return False unless $check.covered;
+        }
+        return True;
     }
 
     #| Sometimes any block pod no matter what contains may be fine 
@@ -29,7 +34,11 @@ class Pod::Coverage {
             @!results.push: $cl;
         }
     }
-    
+
+    method covered {
+        @!results.elems == 0;
+    }
+
     method coverage($toload, $packageStr, $path){
         my $i = Pod::Coverage.new;
         if $anypod {
@@ -43,6 +52,7 @@ class Pod::Coverage {
         $i.correct-pod($path);
   
         $i.show-results($packageStr);
+        return $i;
 
     }
 
