@@ -4,6 +4,6 @@ use v6;
 use Pod::Coverage;
     
 sub MAIN(Str $dir = './META.info', Bool :$anypod){
-    Pod::Coverage.enable-anypod($anypod);
-    Pod::Coverage.new.use-meta($dir);
+    Pod::Coverage.anypod = $anypod;
+    Pod::Coverage.use-meta($dir)>>.show-results;
 }
