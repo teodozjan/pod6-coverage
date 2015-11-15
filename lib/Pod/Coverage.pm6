@@ -50,14 +50,14 @@ class Pod::Coverage {
         if @!results {   
             for @!results.values -> $result {
                 if $result.^can("package") {
-                    say $result.package.^name ~ "::" ~ $result.name ~ " is not documented";
+                    say $result.package.^name ~ "::" ~ $result.name ~ " has no pod";
                 }
                 else {
-                    say $result.^name ~ " is not documented";
+                    say $result.^name ~ " has no pod";
                 }
             }
         } else {
-            say "$packageStr seems documented";
+            say "$packageStr has pod";
         }
 
     }
