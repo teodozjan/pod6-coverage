@@ -5,7 +5,8 @@
     "description" : "Pod coverage library",
     "depends"     : [ ],
     "provides"    : {
-	        "Pod::Coverage" : "lib/Pod/Coverage.pm6"
+	        "Pod::Coverage" : "lib/Pod/Coverage.pm6",
+		"Pod::To::Keywords" : "lib/Pod/To/Keywords.pm6"
 	 },
     "source-url"  : "git://github.com/teodozjan/pod6-coverage.git"
 }
