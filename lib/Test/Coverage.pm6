@@ -27,7 +27,7 @@ sub subtest_anypod_ok($metafile, $identity = "any POD coverage") is export {
     }, $identity;
 }
 
-# Checks if provides contain any pod
+#| Checks if provides contain any pod
 sub anypod_ok($metafile) {
     coverage($metafile,True);
 }

@@ -58,6 +58,7 @@ class Pod::Coverage {
         @checks
     }
 
+    #| Checks if module file contains at least any line of pod
     method file-haspod($path, $packageStr) {
         unless read_pod($path).elems > 0 {
             my $cl = my class {};
@@ -82,7 +83,9 @@ class Pod::Coverage {
         return $i;
 
     }
-    
+
+    #| Returns stringified version of results... in opposite to
+    #| raw C<@.results>
     method get-results {
         gather {
             if @!results {   
