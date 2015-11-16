@@ -33,7 +33,7 @@ sub anypod_ok($metafile) {
 }
 
 sub coverage($metafile, $anypod) {
-    my @cases = Pod::Coverage.use-meta($metafile);
+    my @cases = Pod::Coverage.use-meta($metafile, $anypod);
     plan @cases.elems;
     for @cases -> $case {
         my $result = $case.are-missing;
