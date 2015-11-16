@@ -66,7 +66,7 @@ class Pod::Coverage {
     method file-haspod($path, $packageStr) {
         
         my $haspod =  qqx/$*EXECUTABLE-NAME --doc $path/.lines;
-        unless read_pod($path).elems > 0 {
+        unless $haspod.elems > 0 {
             my $cl = DummyClass.new;
             $cl.name = $!packageStr;
             @!results.push: $cl;
