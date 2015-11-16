@@ -203,7 +203,7 @@ class Pod::Coverage {
     }
 
     sub read_pod($filename){        
-        return qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/.lines;
+        return qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/;
         CATCH {
                 warn "Could not open file $filename";
                 return Empty;
