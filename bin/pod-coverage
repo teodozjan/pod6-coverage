@@ -5,5 +5,5 @@ use Pod::Coverage;
     
 sub MAIN(Str $dir = './META.info', Bool :$anypod){
     Pod::Coverage.anypod = $anypod;
-    Pod::Coverage.use-meta($dir)>>.show-results;
+    Pod::Coverage.use-meta($dir)>>.get-results.say;
 }

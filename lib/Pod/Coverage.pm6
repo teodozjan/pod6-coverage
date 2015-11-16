@@ -83,18 +83,20 @@ class Pod::Coverage {
 
     }
     
-    method show-results {
-        if @!results {   
-            for @!results.values -> $result {
-                if $result.^can("package") {
-                    say $result.package.^name ~ "::" ~ $result.name ~ " has no pod";
+    method get-results {
+        gather {
+            if @!results {   
+                for @!results.values -> $result {
+                    if $result.^can("package") {
+                        take $result.package.^name ~ "::" ~ $result.name ~ " has no pod";
+                    }
+                    else {
+                        take $result.^name ~ " has no pod";
+                    }
                 }
-                else {
-                    say $result.^name ~ " has no pod";
-                }
+            } else {
+                take $!packageStr ~ " has pod";
             }
-        } else {
-            say $!packageStr ~ " has pod";
         }
 
     }
