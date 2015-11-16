@@ -1,5 +1,5 @@
 use v6;
-use JSON::Fast;
+use JSON::Tiny;
 
 #| If You want to understand how module works start with
 #| C<coverage> and C<@.results>
