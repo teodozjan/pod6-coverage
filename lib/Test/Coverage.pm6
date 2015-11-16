@@ -20,13 +20,14 @@ sub subtest_coverage_ok($metafile, $identity =  "POD coverage") is export {
     }, $identity;
 }
 
-
+#| Subtest version of C<anypod_ok>
 sub subtest_anypod_ok($metafile, $identity = "any POD coverage") is export {
     subtest {
        anypod_ok($metafile);     
     }, $identity;
 }
 
+# Checks if provides contain any pod
 sub anypod_ok($metafile) {
     coverage($metafile,True);
 }
