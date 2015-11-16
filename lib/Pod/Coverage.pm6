@@ -40,19 +40,19 @@ class Pod::Coverage {
     #|  disabled as default
     has Bool $.ignore-accessors is rw = True;
     #| Sometimes any block pod no matter what contains may be fine 
-    my $.anypod = False;
+    has $.anypod = False;
     #|Attribute list for skipping accessor methods
     has @!currentAttr;
     has @.results = ();
     has $.packageStr;
 
-    #| place to start to cammand line
-    method use-meta($metafile){
+    #| place to start to command line
+    method use-meta($metafile, $anypod=False){
         my @checks;
         my $mod = from-json slurp $metafile;
         for (flat @($mod<provides>//Empty)) -> $val {
             for $val.kv -> $k, $v {
-                   @checks.push: Pod::Coverage.coverage($k,$k, $v);
+                   @checks.push: Pod::Coverage.coverage($k,$k, $v,$anypod);
             }
         }
         @checks
@@ -67,9 +67,9 @@ class Pod::Coverage {
     }
 
     #| place to start for writting own tool  
-    method coverage($toload, $packageStr, $path){
+    method coverage($toload, $packageStr, $path, $anypod = False){
         my $i = Pod::Coverage.new(packageStr => $packageStr);
-          if $.anypod {
+          if $i.anypod {
             $i.file-haspod($path, $packageStr);
         }
         else {

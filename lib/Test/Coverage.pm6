@@ -8,6 +8,30 @@ unit module Test::Coverage;
 #| TAP for Pod::Coverage
 sub coverage_ok($metafile) is export {    
     
+    coverage($metafile, False)
+        
+}
+
+#| same as C<coverage_ok>
+sub subtest_coverage_ok($metafile, $identity =  "POD coverage") is export {
+
+    subtest {        
+        coverage_ok($metafile);     
+    }, $identity;
+}
+
+
+sub subtest_anypod_ok($metafile, $identity = "any POD coverage") is export {
+    subtest {
+       anypod_ok($metafile);     
+    }, $identity;
+}
+
+sub anypod_ok($metafile) {
+    coverage($metafile,True);
+}
+
+sub coverage($metafile, $anypod) {
     my @cases = Pod::Coverage.use-meta($metafile);
     plan @cases.elems;
     for @cases -> $case {
@@ -17,16 +41,6 @@ sub coverage_ok($metafile) is export {
             $what = $what ~ "\n" ~  $case.get-results.join("\n");
         }
         nok $result, $what;
-    } 
-    
+    }    
 }
-
-#| same as C<coverage_ok>
-sub subtest_coverage_ok($metafile) is export {
-
-    subtest {        
-        coverage_ok($metafile);     
-    }, "POD coverage";
-}
-
 
