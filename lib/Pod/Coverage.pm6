@@ -63,7 +63,9 @@ class Pod::Coverage {
     }
 
     #| Checks if module file contains at least any line of pod
-    method file-haspod($path, $packageStr) {        
+    method file-haspod($path, $packageStr) {
+        
+        my $haspod =  qqx/$*EXECUTABLE-NAME --doc $path/.lines;
         unless read_pod($path).elems > 0 {
             my $cl = DummyClass.new;
             $cl.name = $!packageStr;
@@ -203,7 +205,7 @@ class Pod::Coverage {
     }
 
     sub read_pod($filename){        
-        return qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/;
+        return qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/.lines;
         CATCH {
                 warn "Could not open file $filename";
                 return Empty;
