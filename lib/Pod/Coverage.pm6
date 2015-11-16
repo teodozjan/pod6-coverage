@@ -174,18 +174,17 @@ class Pod::Coverage {
 
 =begin pod
 
-=head1 Pod::Coverage
+=head1 NAME
+
+ Pod::Coverage
 
 =head1 SYNOPSIS
 
 =begin code
 
 git clone https://github.com/jonathanstowe/META6.git
-
 cd META6
-
 panda install ./
-
 pod-coverage 
 
 =end code 
@@ -195,9 +194,7 @@ or
 =begin code
 
 git clone https://github.com/jonathanstowe/META6.git
-
 cd META6
-
 pod-coverage --anypod
 
 =end code 
