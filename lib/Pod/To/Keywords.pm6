@@ -3,7 +3,7 @@ use Pod::To::Text;
 
 #| Strips I<keywords> that indicate documented methods/classes/subs etc.
 class Pod::To::Keywords {
-    method render(@pod) { #= Go though different pods
+    method render(@pod) { #= Go through different pods
         for @pod -> $pode {
             for $pode.contents -> $v {
                 if $v ~~ Pod::Heading {
