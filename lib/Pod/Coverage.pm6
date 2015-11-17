@@ -64,7 +64,10 @@ class Pod::Coverage {
         
         my $haspod =  qqx/$*EXECUTABLE-NAME --doc $path/.lines;
         unless $haspod.elems > 0 {
-            @!results.push(::($packageStr));
+            my $expod = $path.subst(/\.pm[6]*$/, '.pod');    
+            my $extpod = qqx/$*EXECUTABLE-NAME --doc $expod/.lines;
+             
+            @!results.push(::($packageStr)) unless $extpod.elems>0;
         }
     }
 
