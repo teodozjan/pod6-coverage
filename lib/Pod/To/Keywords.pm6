@@ -7,8 +7,14 @@ class Pod::To::Keywords {
     method render(@pod) { #= Go through different pods
         for @pod -> $pode {
             for $pode.contents -> $v {
-                if $v ~~ Pod::Heading {
+                if $v ~~ Pod::Heading  {
                     say Pod::To::Text.render( $v );
+
+                }
+
+                # TODO check header METHODS
+                if $v ~~ Pod::Item {
+                    say "routine " ~ Pod::To::Text.render( $v.contents );
 
                 }
             }

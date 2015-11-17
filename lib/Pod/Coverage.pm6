@@ -187,6 +187,8 @@ class Pod::Coverage {
     #| Takes whole pod and corrects list made by C<method parse>
     method correct-pod($filename) {
         my @keywords = read_pod($filename);
+        @keywords.append(read_pod($filename.subst(/\.pm[6]*$/, '.pod'))); 
+        
         my @new_results;
         for @!results -> $result {
             # HACK
@@ -194,7 +196,7 @@ class Pod::Coverage {
             if $result.WHAT ~~ Sub {  
                 @new_results.push: $result unless @keywords.first(/[sub|routine|subroutine]\s+$name/);                
             } elsif $result.WHAT ~~ Routine {
-                @new_results.push: $result unless @keywords.first(/[method]\s+$name/); 
+                @new_results.push: $result unless @keywords.first(/[method|routine]\s+$name/); 
             } else {
                 @new_results.push: $result unless @keywords.first(/\s*$name/); 
             }
