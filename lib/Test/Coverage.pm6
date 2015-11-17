@@ -7,9 +7,7 @@ unit module Test::Coverage;
 
 #| TAP for Pod::Coverage
 sub coverage_ok($metafile) is export {    
-    
-    coverage($metafile, False)
-        
+    coverage($metafile, False)        
 }
 
 #| same as C<coverage_ok>
