@@ -186,7 +186,7 @@ class Pod::Coverage {
 
     #| Takes whole pod and corrects list made by C<method parse>
     method correct-pod($filename) {
-        my @keywords = read_pod($filename);
+        my @keywords = read_pod($filename,True);
         @keywords.append(read_pod($filename.subst(/\.pm[6]*$/, '.pod'))); 
         
         my @new_results;
@@ -205,10 +205,9 @@ class Pod::Coverage {
         
     }
 
-    sub read_pod($filename){        
+    sub read_pod($filename, $important=False){        
         return qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/.lines;
         CATCH {
-                warn "Could not open file $filename";
                 return Empty;
         }    
     }
