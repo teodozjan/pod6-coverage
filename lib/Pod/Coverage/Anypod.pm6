@@ -23,3 +23,17 @@ method !file-haspod {
     }
 }
 
+#| Returns stringified version of results... in opposite to
+#| raw C<@.results>
+method get-results {
+    gather {
+        if @!results {   
+            for @!results.values -> $result {            
+                take $result.^name ~ " has no pod";
+            }            
+        } else {
+            take $!packageStr ~ " has pod";
+        }
+    }
+
+}
