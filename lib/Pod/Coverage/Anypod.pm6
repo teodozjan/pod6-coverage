@@ -29,7 +29,7 @@ method get-results {
     gather {
         if @!results {   
             for @!results.values -> $result {            
-                take $result.^name ~ " has no pod";
+                take $!packageStr ~ " has no pod";
             }            
         } else {
             take $!packageStr ~ " has pod";
