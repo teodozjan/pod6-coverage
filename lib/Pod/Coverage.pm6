@@ -37,35 +37,33 @@ pod-coverage --anypod
 
 =cut
 
-class Pod::Coverage { 
-    #| place to start to command line
-    method use-meta($metafile,$anypod){
-        my @checks;
-        my $mod = from-json slurp $metafile;
-        for (flat @($mod<provides>//Empty)) -> $val {
-            for $val.kv -> $k, $v {
-                   @checks.push: Pod::Coverage.coverage($k,$k, $v,$anypod);
-            }
+unit class Pod::Coverage;
+#| place to start to command line
+method use-meta($metafile,$anypod) {
+    my @checks;
+    my $mod = from-json slurp $metafile;
+    for (flat @($mod<provides>//Empty)) -> $val {
+        for $val.kv -> $k, $v {
+            @checks.push: Pod::Coverage.coverage($k,$k, $v,$anypod);
         }
-        @checks
     }
-
-    #| place to start for writting own tool  
-    method coverage($toload, $packageStr, $path, $anypod = False) {
-        my $i;
-        if $anypod {
-            $i = Pod::Coverage::Anypod.new(packageStr => $packageStr, path => $path);
-        }
-        else {
-            $i = Pod::Coverage::Full.new(
-                packageStr => $packageStr, path => $path, toload => $toload);
-            
-        }
-        $i.check;
-  
-        return $i;
-    }
+    @checks
 }
 
+#| place to start for writting own tool  
+method coverage($toload, $packageStr, $path, $anypod = False) {
+    my $i;
+    if $anypod {
+        $i = Pod::Coverage::Anypod.new(packageStr => $packageStr, path => $path);
+    }
+    else {
+        $i = Pod::Coverage::Full.new(
+            packageStr => $packageStr, path => $path, toload => $toload);
+        
+    }
+    $i.check;
+    
+    return $i;
+}
 
 

@@ -5,6 +5,6 @@ use Pod::Coverage;
 
 sub MAIN(Str $dir = './META.info', Bool :$anypod){
     for Pod::Coverage.use-meta($dir,$anypod) -> $res {
-       say $res.get-results.join("\n");
+       say join("\n", $res.get-results>>.gist);
     }   
 }

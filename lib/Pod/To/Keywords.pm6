@@ -9,13 +9,11 @@ class Pod::To::Keywords {
             for $pode.contents -> $v {
                 if $v ~~ Pod::Heading  {
                     say Pod::To::Text.render( $v );
-
                 }
 
                 # TODO check header METHODS
                 if $v ~~ Pod::Item {
                     say "routine " ~ Pod::To::Text.render( $v.contents );
-
                 }
             }
             

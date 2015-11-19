@@ -1,39 +1,33 @@
 use v6;
 use Pod::Tester;
-
-#| Sometimes any block pod no matter what contains may be fine 
+use Pod::Coverage::Result;
+use Pod::Coverage::PodEgg;
+#| I<Sometimes any block pod no matter what contains may be fine>
+#| checks only if provided files return any result of C<perl6 --pod>
 unit class Pod::Coverage::Anypod does Pod::Tester;
 
 has $.path;
 has $.packageStr;
 
 method check {
-
     self!file-haspod;
-    
 }
+
 #| Checks if module file contains at least any line of pod
-method !file-haspod {    
-    my $haspod =  qqx/$*EXECUTABLE-NAME --doc $!path/.lines;
-    unless $haspod.elems > 0 {
-        my $expod = $!path.subst(/\.pm[6]*$/, '.pod');    
-        my $extpod = qqx/$*EXECUTABLE-NAME --doc $expod/.lines;
-        
-        @!results.push($!packageStr) unless $extpod.elems>0;
-    }
+method !file-haspod {
+    my $r =  new-result(packagename => $!packageStr, path => $!path);
+    my $egg = Pod::Coverage::PodEgg.new(orig => $!path);
+    $r.is_ok = any( has-pod($egg.orig), has-pod($egg.pod), has-pod($egg.pod6)).Bool;
+  
+  @.results.push($r)
 }
 
-#| Returns stringified version of results... in opposite to
-#| raw C<@.results>
-method get-results {
-    gather {
-        if @!results {   
-            for @!results.values -> $result {            
-                take $!packageStr ~ " has no pod";
-            }            
-        } else {
-            take $!packageStr ~ " has pod";
-        }
-    }
 
+sub has-pod($path) returns Bool {
+    #dd qqx/$*EXECUTABLE-NAME --doc $path/.lines.elems;
+    $path.IO ~~ :f and qqx/$*EXECUTABLE-NAME --doc $path/.lines.elems.Bool;
 }
+
+
+
+
