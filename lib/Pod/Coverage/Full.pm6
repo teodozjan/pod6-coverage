@@ -95,11 +95,10 @@ method parse($whoO) {
             self.parse($role);
         }
     }
-    #        elsif ($whoO ~~ Grepper)
-    #        {
-    #todo
-
-    #        }
+    elsif ($whoO ~~ Any::Grepper)
+    {
+    # it looks like we dont need gepper
+    }
     else {
         warn "What is " ~ $whoO.^name ~ " ?";
     }
