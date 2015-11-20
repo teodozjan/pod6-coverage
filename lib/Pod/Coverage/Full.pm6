@@ -97,7 +97,7 @@ method parse($whoO) {
     }
     elsif ($whoO ~~ Any::Grepper)
     {
-    # it looks like we dont need gepper
+    # it looks like we dont need grepper
     }
     else {
         warn "What is " ~ $whoO.^name ~ " ?";
