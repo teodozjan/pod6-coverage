@@ -28,13 +28,14 @@ class Pod::To::Keywords {
 
 =begin pod
 
-=NAME Pod::To::Coverage
+=TITLE Pod::To::Coverage
 
 =SYNOPSIS perl6 --doc=Keywords
 
 =begin DESCRIPTION
 
-Here lies description like C<dump-results()>
+This pod parser tries to extract module documentation information
+basing on semantic keywords
 
 =end DESCRIPTION
 
