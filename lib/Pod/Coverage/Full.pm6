@@ -78,7 +78,7 @@ method parse($whoO) {
     } elsif ($whoO.HOW ~~ Metamodel::ClassHOW ) 
     {
         unless $whoO.WHY {
-            @.results.push: new-result(name => $whoO.^name);
+            @.results.push: new-result(packagename => $whoO.^name);
         }
         
         @!currentAttr = $whoO.^attributes;
