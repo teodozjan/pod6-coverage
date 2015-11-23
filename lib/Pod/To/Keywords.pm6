@@ -34,7 +34,7 @@ class Pod::To::Keywords {
 
 =begin pod
 
-=TITLE Pod::To::Coverage
+=TITLE Pod::To::Keywords
 
 =SYNOPSIS perl6 --doc=Keywords
 

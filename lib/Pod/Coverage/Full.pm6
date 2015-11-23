@@ -119,7 +119,9 @@ method correct-pod($filename) {
 
     my @new_results;
     for @.results -> $result {
-        my $name = $result.what;
+        
+        my $name = $result.name // $result.packagename;
+
         if $result.what ~~ Sub {  
            @new_results.push: $result unless @keywords.first(/[sub|routine|subroutine]\s+$name/);    #            
      } elsif $result.what ~~ Routine {
