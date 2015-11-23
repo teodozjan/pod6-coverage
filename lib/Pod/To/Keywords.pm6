@@ -10,8 +10,14 @@ class Pod::To::Keywords {
     method render(@pod) {
         for @pod -> $pode {
             for $pode.contents -> $v {
+
+                if $v ~~ Pod::Block::Named {
+                    say $v.name.lc ~ ' ' ~ $v.contents[0].contents ;
+
+                }
+                
                 if $v ~~ Pod::Heading  {
-                    
+                    Pod::To::Text.render( $v.contents) ;
                 }
 
                 # TODO check header METHODS
