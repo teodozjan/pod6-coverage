@@ -29,8 +29,6 @@ method check{
 
     #start from self        
     self.parse($packageO);
-    dd $!packageStr;
-    dd $packageO;
     self.correct-pod($!path) if @.results;
     
     unless @.results {
