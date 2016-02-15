@@ -111,7 +111,9 @@ method correct-pod($filename) {
     my $egg = Pod::Coverage::PodEgg.new(orig => $filename);
     my @keywords;
     for $egg.list -> $x { 
+        note "Reading $x";
         @keywords.append(read_pod($x));
+        note "Done";
     }
     
     return unless @keywords; 
