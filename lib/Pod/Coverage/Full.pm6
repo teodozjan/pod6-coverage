@@ -136,7 +136,9 @@ method correct-pod($filename) {
     @.results =  @new_results;
 }
 
-sub read_pod($filename){        
+sub read_pod($filename){
+    say "$*EXECUTABLE-NAME --doc=Keywords $filename";
+    dd qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/;
     return qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/.lines;
 }
 
