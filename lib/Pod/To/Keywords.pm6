@@ -1,6 +1,6 @@
 use v6;
 use Pod::To::Text;
-use Pod::Coverage::Result;
+require Pod::Coverage::Result;
 
 
 # Strips I<keywords> that indicate documented methods/classes/subs etc.
