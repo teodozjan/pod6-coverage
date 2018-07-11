@@ -42,6 +42,8 @@ method check{
 #| we don't know in what files symbols are in so not setting them to result
 method parse($whoO) {
     if ($whoO.WHAT ~~ Routine) {
+        
+        die if $whoO.name ~~ 'BUILDALL';
         # Because Routine is a class it must be checked before generic rule for class
         unless $whoO.WHY {
             if $whoO.WHAT ~~ Method {
@@ -84,7 +86,11 @@ method parse($whoO) {
         
         @!currentAttr = $whoO.^attributes;
         
-        for $whoO.^methods(:local) -> $m {                
+        for $whoO.^methods(:local) -> $m {
+            if ((Mu.^methods.map: {.name}) ∋ $m.name) {
+                warn "skipping " ~ $m.name;
+                next;
+            }
             self.parse($m);
         }
         
