@@ -96,6 +96,11 @@ method parse($whoO) {
             self.parse($role);
         }
     }
+    elsif ($whoO.HOW ~~ Metamodel::ParametricRoleHOW) {
+                        
+            self.parse($whoO);
+        
+    }
     elsif ($whoO ~~ Any::Grepper)
     {
     # it looks like we dont need grepper
