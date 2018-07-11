@@ -97,8 +97,18 @@ method parse($whoO) {
         }
     }
     elsif ($whoO.HOW ~~ Metamodel::ParametricRoleHOW) {
-                        
-            self.parse($whoO);
+            dd "Stalks";
+            unless $whoO.WHY {
+                @.results.push: new-result(packagename => $whoO.^name);
+            }
+            
+            @!currentAttr = $whoO.^attributes;
+            
+            for $whoO.^methods(:local) -> $m {                
+                self.parse($m);
+            }
+        
+            self.parse-exports($whoO);
         
     }
     elsif ($whoO ~~ Any::Grepper)
