@@ -97,7 +97,7 @@ method parse($whoO) {
         }
     }
     elsif ($whoO.HOW ~~ Metamodel::ParametricRoleHOW) {
-            dd "Stalks";
+            
             unless $whoO.WHY {
                 @.results.push: new-result(packagename => $whoO.^name);
             }
@@ -152,7 +152,7 @@ method correct-pod($filename) {
 }
 
 sub read_pod($filename){
-    say "$*EXECUTABLE-NAME --doc=Keywords $filename";
+    
     dd qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/;
     return qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/.lines;
 }
