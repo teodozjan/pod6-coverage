@@ -17,6 +17,8 @@ method gist {
 method Str {
     self.desc;
 }
+
+#| redefining gist
 method desc {
     my $no = $!is_ok ?? "" !! " no";
     my $path = $!path ?? '(' ~ $!path ~ ')' !! "";
@@ -26,6 +28,7 @@ method desc {
 
 multi method Bool {$!is_ok}
 
+#| creator
 sub new-result(Str :$packagename!, Str :$name?, :$path?, :$type?, :$what?) is export {
     Pod::Coverage::Result.new(
         packagename => $packagename,
