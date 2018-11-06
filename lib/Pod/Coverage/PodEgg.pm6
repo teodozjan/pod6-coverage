@@ -12,6 +12,7 @@ method pod  {$!orig.subst(/\.pm[6]*$/, '.pod');}
 #| pod extension with 6
 method pod6 {$!orig.subst(/\.pm[6]*$/, '.pod6')};
 
+#| list pod6 and pod files
 method list {
     gather {
         take $!orig;
