@@ -3,6 +3,7 @@ use Pod::Tester;
 use Pod::Coverage::Result;
 use Pod::Coverage::PodEgg;
 
+#| Checks if every  element is documented (methods fields and so on)
 unit class Pod::Coverage::Full does Pod::Tester;
 
 #| Sometimes filename is totally out of scope. That's the reason
