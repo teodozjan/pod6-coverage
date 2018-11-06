@@ -166,6 +166,7 @@ sub read_pod($filename){
 }
 
 
+#| packing into result object
 sub routine-result($what){
     new-result(packagename => $what.package.^name, name => $what.name);
 }
