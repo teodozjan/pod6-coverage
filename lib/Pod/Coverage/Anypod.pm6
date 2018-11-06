@@ -9,6 +9,7 @@ unit class Pod::Coverage::Anypod does Pod::Tester;
 has $.path;
 has $.packageStr;
 
+#| Returns if document has any pod in it
 method check {
     self!file-haspod;
 }
