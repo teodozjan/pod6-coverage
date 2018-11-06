@@ -22,7 +22,7 @@ has Bool $.ignore-accessors is rw = True;
 #|Attribute list for skipping accessor methods
 has @!currentAttr;
 
-
+#| Loading package
 method check{
     require ::($!toload);
     my $packageO = ::($!packageStr);
@@ -157,16 +157,20 @@ method correct-pod($filename) {
     @.results =  @new_results;
 }
 
+#| Run pod parser externally
+#| if perl gives better way use it
 sub read_pod($filename){
     
     dd qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/;
     return qqx/$*EXECUTABLE-NAME --doc=Keywords $filename/.lines;
 }
 
+
 sub routine-result($what){
     new-result(packagename => $what.package.^name, name => $what.name);
 }
 
+#| some stuff cannot be acessed other way
 method parse-exports($whoO) {
     for $whoO.WHO<EXPORT>.WHO<ALL>.WHO.values -> $val {
         next unless $val ~~ Sub;
