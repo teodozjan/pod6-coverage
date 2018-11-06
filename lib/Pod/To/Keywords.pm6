@@ -3,7 +3,7 @@ use Pod::To::Text;
 use Pod::Coverage::Result;
 
 
-# Strips I<keywords> that indicate documented methods/classes/subs etc.
+#| Strips I<keywords> that indicate documented methods/classes/subs etc.
 class Pod::To::Keywords {
     has Pod::Coverage::Result $.results = ();
     
