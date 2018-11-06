@@ -7,6 +7,7 @@ use Pod::Coverage::Result;
 class Pod::To::Keywords {
     has Pod::Coverage::Result $.results = ();
     
+    #| method run by --doc 
     method render(@pod) {
         for @pod -> $pode {
             for $pode.contents -> $v {
