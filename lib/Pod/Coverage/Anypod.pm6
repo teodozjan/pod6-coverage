@@ -23,6 +23,7 @@ method !file-haspod {
 }
 
 
+#| Ok if number of elements is greater than 0
 sub has-pod($path) returns Bool {
     #dd qqx/$*EXECUTABLE-NAME --doc $path/.lines.elems;
     $path.IO ~~ :f and qqx/$*EXECUTABLE-NAME --doc $path/.lines.elems.Bool;
