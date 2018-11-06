@@ -12,7 +12,7 @@
         "Pod::Coverage::Full": "lib/Pod/Coverage/Full.pm6",
         "Pod::Coverage::PodEgg": "lib/Pod/Coverage/PodEgg.pm6",
         "Pod::Coverage::Result": "lib/Pod/Coverage/Result.pm6",
-        "Pod::Coverage::To::Keywords": "lib/Pod/Coverage/To/Keywords.pm6",
+        "Pod::Coverage::To::Keywords": "lib/Pod/To/Keywords.pm6",
         "Pod::Tester": "lib/Pod/Tester.pm6",
         "Test::Coverage" : "lib/Test/Coverage.pm6"
     },
