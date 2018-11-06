@@ -88,7 +88,7 @@ method parse($whoO) {
         
         for $whoO.^methods(:local) -> $m {
             if ((Mu.^methods.map: {.name}) ∋ $m.name) {
-                warn "skipping " ~ $m.name;
+                #warn "skipping " ~ $m.name;
                 next;
             }
             self.parse($m);
